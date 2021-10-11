@@ -1,8 +1,8 @@
-type WelcomeScreenProps = {
-  errorsCount: number;
-};
+type MainProps = {
+  offersCount: number;
+}
 
-function WelcomeScreen({ errorsCount }: WelcomeScreenProps): JSX.Element {
+function Main({ offersCount }: MainProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -85,7 +85,7 @@ function WelcomeScreen({ errorsCount }: WelcomeScreenProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">312 places to stay in Amsterdam</b>
+              <b className="places__found">{offersCount} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -124,7 +124,7 @@ function WelcomeScreen({ errorsCount }: WelcomeScreenProps): JSX.Element {
                         src="img/apartment-01.jpg"
                         width="260"
                         height="200"
-                        alt="Place image"
+                        alt="Place"
                       />
                     </a>
                   </div>
@@ -173,7 +173,7 @@ function WelcomeScreen({ errorsCount }: WelcomeScreenProps): JSX.Element {
                         src="img/room.jpg"
                         width="260"
                         height="200"
-                        alt="Place image"
+                        alt="Place"
                       />
                     </a>
                   </div>
@@ -220,7 +220,7 @@ function WelcomeScreen({ errorsCount }: WelcomeScreenProps): JSX.Element {
                         src="img/apartment-02.jpg"
                         width="260"
                         height="200"
-                        alt="Place image"
+                        alt="Place"
                       />
                     </a>
                   </div>
@@ -270,7 +270,7 @@ function WelcomeScreen({ errorsCount }: WelcomeScreenProps): JSX.Element {
                         src="img/apartment-03.jpg"
                         width="260"
                         height="200"
-                        alt="Place image"
+                        alt="Place"
                       />
                     </a>
                   </div>
@@ -317,7 +317,7 @@ function WelcomeScreen({ errorsCount }: WelcomeScreenProps): JSX.Element {
                         src="img/room.jpg"
                         width="260"
                         height="200"
-                        alt="Place image"
+                        alt="Place"
                       />
                     </a>
                   </div>
@@ -367,4 +367,4 @@ function WelcomeScreen({ errorsCount }: WelcomeScreenProps): JSX.Element {
   );
 }
 
-export default WelcomeScreen;
+export default Main;
