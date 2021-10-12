@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './components/app/app';
 
 const Data = {
-  OFFERS_COUNT: 120,
+  OFFERS_COUNT: 5,
 };
 
 ReactDOM.render(
