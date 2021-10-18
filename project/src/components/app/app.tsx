@@ -2,6 +2,7 @@ import { Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import Favorites from '../favorites/favorites';
+import Property from '../property/property';
 import Login from '../login/login';
 import Main from '../main/main';
 import NotFound from '../not-found/not-found';
@@ -23,7 +24,10 @@ function App({ offersCount }: Props): JSX.Element {
         <Route exact path={AppRoute.Favorites}>
           <Favorites />
         </Route>
-        <Route exact path={AppRoute.NotFound}>
+        <Route exact path={AppRoute.Room} >
+          <Property />
+        </Route>
+        <Route>
           <NotFound />
         </Route>
       </Switch>
