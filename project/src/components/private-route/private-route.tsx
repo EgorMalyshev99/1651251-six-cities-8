@@ -1,12 +1,30 @@
-import { Route, Redirect } from 'react-router-dom';
-import Favorites from '../favorites/favorites';
+import { Route, Redirect } from 'react-router';
+import { RouteProps } from 'react-router-dom';
+import { AppRoute, AuthStatus } from '../../const';
 
-const isLogged = false;
+type PrivateRouteProps = RouteProps & {
+  render: () => JSX.Element;
+  authStatus: AuthStatus;
+}
 
-export default function PrivetRoute(): JSX.Element {
+function PrivateRoute({
+  exact,
+  path,
+  render,
+  authStatus,
+}: PrivateRouteProps): JSX.Element {
+
   return (
     <Route
-      render={() => isLogged ? <Favorites /> : <Redirect to='/login' />}
+      exact={exact}
+      path={path}
+      render={() => (
+        authStatus === AuthStatus.Auth
+          ? render()
+          : <Redirect to={AppRoute.SignIn} />
+      )}
     />
   );
 }
+
+export default PrivateRoute;
