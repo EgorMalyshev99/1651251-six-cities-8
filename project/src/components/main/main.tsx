@@ -5,6 +5,14 @@ type Props = {
 }
 
 function Main({ offersCount }: Props): JSX.Element {
+  const offersList = new Array(offersCount).fill('');
+
+  let i = 50;
+  offersList.forEach((item, index) => {
+    offersList[index] = <OffersCard key={i} />;
+    i++;
+  });
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -115,11 +123,7 @@ function Main({ offersCount }: Props): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <OffersCard />
-                <OffersCard />
-                <OffersCard />
-                <OffersCard />
-                <OffersCard />
+                {offersList}
               </div>
             </section>
             <div className="cities__right-section">
