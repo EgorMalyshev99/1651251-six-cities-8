@@ -1,17 +1,12 @@
-import OffersCard from '../offers-card/offers-card';
+import { Offers } from '../../types/offer';
+import OffersList from '../offers-list/offers-list';
 
 type Props = {
   offersCount: number;
+  offers: Offers;
 }
 
-function Main({ offersCount }: Props): JSX.Element {
-  const offersList = new Array(offersCount).fill('');
-
-  let i = 50;
-  offersList.forEach((item, index) => {
-    offersList[index] = <OffersCard key={i} />;
-    i++;
-  });
+function Main({ offersCount, offers }: Props): JSX.Element {
 
   return (
     <div className="page page--gray page--main">
@@ -104,7 +99,7 @@ function Main({ offersCount }: Props): JSX.Element {
                     <use xlinkHref="#icon-arrow-select"></use>
                   </svg>
                 </span>
-                <ul className="places__options places__options--custom places__options--opened">
+                <ul className="places__options places__options--custom">
                   <li
                     className="places__option places__option--active"
                     tabIndex={0}
@@ -122,9 +117,7 @@ function Main({ offersCount }: Props): JSX.Element {
                   </li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                {offersList}
-              </div>
+              <OffersList offers={offers} isFavoritesPage={false} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
