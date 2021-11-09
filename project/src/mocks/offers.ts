@@ -17,9 +17,9 @@ export const offers: Offer[] = [
     hostText: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.',
     hostRank: 'Pro',
     location: {
-      city: 'Moscow',
-      lat: 55.755819,
-      lng: 37.617644,
+      city: 'Amsterdam',
+      lat: 52.3909553943508,
+      lng: 4.85309666406198,
     },
   },
   {
@@ -38,9 +38,9 @@ export const offers: Offer[] = [
     hostText: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.',
     hostRank: 'Pro',
     location: {
-      city: 'Novosibirsk',
-      lat: 55.755819,
-      lng: 37.617644,
+      city: 'Amsterdam',
+      lat: 52.369553943508,
+      lng: 4.85309666406198,
     },
   },
   {
@@ -59,9 +59,9 @@ export const offers: Offer[] = [
     hostText: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.',
     hostRank: 'Pro',
     location: {
-      city: 'Sergiev-Posad',
-      lat: 55.755819,
-      lng: 37.617644,
+      city: 'Amsterdam',
+      lat: 52.3909553943508,
+      lng: 4.929309666406198,
     },
   },
   {
@@ -80,9 +80,9 @@ export const offers: Offer[] = [
     hostText: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.',
     hostRank: 'Pro',
     location: {
-      city: 'Yaroslavl',
-      lat: 55.755819,
-      lng: 37.617644,
+      city: 'Amsterdam',
+      lat: 52.3809553943508,
+      lng: 4.939309666406198,
     },
   },
 ];
