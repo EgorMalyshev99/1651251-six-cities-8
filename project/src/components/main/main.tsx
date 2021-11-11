@@ -141,6 +141,7 @@ function Main({ offersCount, offers }: Props): JSX.Element {
                   centerPoint={MAP_CENTER}
                   offers={offers}
                   selectedOffer={selectedOffer}
+                  setAdditionalClass={'cities__map'}
                 />
               </div>
             </div>

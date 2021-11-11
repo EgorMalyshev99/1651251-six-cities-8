@@ -10,6 +10,7 @@ type Props = {
   centerPoint: CenterPoint;
   offers: Offers;
   selectedOffer: Offer | undefined;
+  setAdditionalClass: string;
 }
 
 const defaultCustomIcon = new Icon({
@@ -24,7 +25,7 @@ const currentCustomIcon = new Icon({
   iconAnchor: [13, 39],
 });
 
-function Map({ centerPoint, offers, selectedOffer }: Props): JSX.Element {
+function Map({ centerPoint, offers, selectedOffer, setAdditionalClass }: Props): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, centerPoint);
 
@@ -48,7 +49,7 @@ function Map({ centerPoint, offers, selectedOffer }: Props): JSX.Element {
   }, [map, offers, selectedOffer]);
 
   return (
-    <section className="cities__map map" ref={mapRef}></section>
+    <section className={`${setAdditionalClass} map`} ref={mapRef}></section>
   );
 }
 
