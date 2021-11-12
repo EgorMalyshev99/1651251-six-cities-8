@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Icon, Marker } from 'leaflet';
 import { CenterPoint } from '../../types/map';
 import { Offer, Offers } from '../../types/offer';
@@ -28,15 +28,23 @@ const currentCustomIcon = new Icon({
 function Map({ centerPoint, offers, selectedOffer, setAdditionalClass }: Props): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, centerPoint);
+  const [markers, setMarkers] = useState<any[]>([]);
 
   useEffect(() => {
     if (map) {
+      markers.forEach((marker: any) => {
+        marker.remove();
+      });
+      setMarkers([]);
+      const currentMarkers: any = [];
+
       offers.forEach((offer) => {
         const marker = new Marker({
           lat: offer.location.lat,
           lng: offer.location.lng,
         });
 
+        currentMarkers.push(marker);
         marker
           .setIcon(
             selectedOffer !== undefined && offer.name === selectedOffer.name
@@ -45,6 +53,7 @@ function Map({ centerPoint, offers, selectedOffer, setAdditionalClass }: Props):
           )
           .addTo(map);
       });
+      setMarkers(currentMarkers);
     }
   }, [map, offers, selectedOffer]);
 

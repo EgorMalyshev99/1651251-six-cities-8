@@ -17,7 +17,11 @@ export const offers: Offer[] = [
     hostText: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.',
     hostRank: 'Pro',
     location: {
-      city: 'Amsterdam',
+      city: {
+        name: 'Amsterdam',
+        lat: 52.3740300,
+        lng: 4.8896900,
+      },
       lat: 52.3909553943508,
       lng: 4.85309666406198,
     },
@@ -38,7 +42,11 @@ export const offers: Offer[] = [
     hostText: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.',
     hostRank: 'Pro',
     location: {
-      city: 'Amsterdam',
+      city: {
+        name: 'Paris',
+        lat: 52.3740300,
+        lng: 4.8896900,
+      },
       lat: 52.369553943508,
       lng: 4.85309666406198,
     },
@@ -59,7 +67,11 @@ export const offers: Offer[] = [
     hostText: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.',
     hostRank: 'Pro',
     location: {
-      city: 'Amsterdam',
+      city: {
+        name: 'Hamburg',
+        lat: 52.3740300,
+        lng: 4.8896900,
+      },
       lat: 52.3909553943508,
       lng: 4.929309666406198,
     },
@@ -80,7 +92,11 @@ export const offers: Offer[] = [
     hostText: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.',
     hostRank: 'Pro',
     location: {
-      city: 'Amsterdam',
+      city: {
+        name: 'Amsterdam',
+        lat: 52.3740300,
+        lng: 4.8896900,
+      },
       lat: 52.3809553943508,
       lng: 4.939309666406198,
     },
