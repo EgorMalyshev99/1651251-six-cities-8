@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Icon, Marker } from 'leaflet';
 import { CenterPoint } from '../../types/map';
 import { Offer, Offers } from '../../types/offer';
@@ -10,6 +10,7 @@ type Props = {
   centerPoint: CenterPoint;
   offers: Offers;
   selectedOffer: Offer | undefined;
+  setAdditionalClass: string;
 }
 
 const defaultCustomIcon = new Icon({
@@ -24,18 +25,26 @@ const currentCustomIcon = new Icon({
   iconAnchor: [13, 39],
 });
 
-function Map({ centerPoint, offers, selectedOffer }: Props): JSX.Element {
+function Map({ centerPoint, offers, selectedOffer, setAdditionalClass }: Props): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, centerPoint);
+  const [markers, setMarkers] = useState<any[]>([]);
 
   useEffect(() => {
     if (map) {
+      markers.forEach((marker: any) => {
+        marker.remove();
+      });
+      setMarkers([]);
+      const currentMarkers: any = [];
+
       offers.forEach((offer) => {
         const marker = new Marker({
           lat: offer.location.lat,
           lng: offer.location.lng,
         });
 
+        currentMarkers.push(marker);
         marker
           .setIcon(
             selectedOffer !== undefined && offer.name === selectedOffer.name
@@ -44,11 +53,12 @@ function Map({ centerPoint, offers, selectedOffer }: Props): JSX.Element {
           )
           .addTo(map);
       });
+      setMarkers(currentMarkers);
     }
   }, [map, offers, selectedOffer]);
 
   return (
-    <section className="cities__map map" ref={mapRef}></section>
+    <section className={`${setAdditionalClass} map`} ref={mapRef}></section>
   );
 }
 

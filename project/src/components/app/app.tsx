@@ -1,5 +1,4 @@
-import { Route, Switch } from 'react-router';
-import { BrowserRouter } from 'react-router-dom';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { AppRoute, AuthStatus } from '../../const';
 import Favorites from '../favorites/favorites';
 import Property from '../property/property';
@@ -11,19 +10,18 @@ import { Offers } from '../../types/offer';
 import { Comments } from '../../types/comment';
 
 type Props = {
-  offersCount: number;
   offers: Offers;
   comments: Comments;
 }
 
-function App({ offersCount, offers, comments }: Props): JSX.Element {
+function App({ offers, comments }: Props): JSX.Element {
   const favoritesOffers = offers.filter((offer) => offer.favorite);
 
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Root}>
-          <Main offersCount={offersCount} offers={offers} />
+          <Main />
         </Route>
         <Route exact path={AppRoute.SignIn}>
           <Login />
