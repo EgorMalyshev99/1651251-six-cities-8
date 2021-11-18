@@ -9,12 +9,12 @@ type Props = {
 
 function OffersCard({ offer, isFavoritesPage, onMouseOver }: Props): JSX.Element {
   const {
-    name,
+    title,
     type,
     price,
     images,
     rating,
-    premium,
+    isPremium,
   } = offer;
 
   const offersCardPath = `/offer/${offer.id}`;
@@ -22,7 +22,7 @@ function OffersCard({ offer, isFavoritesPage, onMouseOver }: Props): JSX.Element
   return (
     <article onMouseOver={onMouseOver} className={`place-card ${isFavoritesPage ? 'favorites__card' : 'cities__place-card '}`}>
       {
-        premium && (
+        isPremium && (
           <div className="place-card__mark">
             <span>Premium</span>
           </div>
@@ -69,7 +69,7 @@ function OffersCard({ offer, isFavoritesPage, onMouseOver }: Props): JSX.Element
         </div>
         <h2 className="place-card__name">
           <a href="#">
-            <Link to={offersCardPath}>{name}</Link>
+            <Link to={offersCardPath}>{title}</Link>
           </a>
         </h2>
         <p className="place-card__type">{type}</p>

@@ -2,15 +2,15 @@ import { nanoid } from '@reduxjs/toolkit';
 import { useParams } from 'react-router';
 import { Offers } from '../../types/offer';
 import CommentForm from '../comment-form/comment-form';
-import { Comments } from '../../types/comment';
-import Review from '../review/review';
+// import { Comments } from '../../types/comment';
+// import Review from '../review/review';
 
 type Props = {
   offers: Offers,
-  comments: Comments,
+  // comments: Comments,
 }
 
-function Property({ offers, comments }: Props): JSX.Element {
+function Property({ offers }: Props): JSX.Element {
 
   const { id } = useParams<{ id: string }>();
   const currentOffer = offers.find((offer) => {
@@ -25,18 +25,18 @@ function Property({ offers, comments }: Props): JSX.Element {
   }
 
   const {
-    name,
-    type,
-    price,
-    // images,
-    rating,
-    premium,
+    bedrooms,
+    // city,
+    description,
+    goods,
+    host,
+    images,
+    isPremium,
     maxAdults,
-    bedroomsCount,
-    facilities,
-    hostName,
-    hostText,
-    hostRank,
+    price,
+    rating,
+    title,
+    type,
   } = currentOffer;
 
   return (
@@ -73,30 +73,17 @@ function Property({ offers, comments }: Props): JSX.Element {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/room.jpg" alt="Studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-02.jpg" alt="Studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-03.jpg" alt="Studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/studio-01.jpg" alt="Studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Studio" />
-              </div>
+              {images.map((image: string | undefined) => (
+                <div className="property__image-wrapper" key={nanoid()}>
+                  <img className="property__image" src={image} alt="" />
+                </div>
+              ))}
             </div>
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
               {
-                premium && (
+                isPremium && (
                   <div className="property__mark">
                     <span>Premium</span>
                   </div>
@@ -104,7 +91,7 @@ function Property({ offers, comments }: Props): JSX.Element {
               }
               <div className="property__name-wrapper">
                 <h1 className="property__name">
-                  {name}
+                  {title}
                 </h1>
                 <button className="property__bookmark-button button" type="button">
                   <svg className="property__bookmark-icon" width="31" height="33">
@@ -125,7 +112,7 @@ function Property({ offers, comments }: Props): JSX.Element {
                   {type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  {bedroomsCount} Bedrooms
+                  {bedrooms} Bedrooms
                 </li>
                 <li className="property__feature property__feature--adults">
                   Max {maxAdults} adults
@@ -139,7 +126,7 @@ function Property({ offers, comments }: Props): JSX.Element {
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
                   {
-                    facilities.map((item, index) => (
+                    goods.map((item) => (
                       <li className="property__inside-item" key={nanoid()}>
                         {item}
                       </li>
@@ -154,15 +141,15 @@ function Property({ offers, comments }: Props): JSX.Element {
                     <img className="property__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74" alt="Host avatar" />
                   </div>
                   <span className="property__user-name">
-                    {hostName}
+                    {host.name}
                   </span>
                   <span className="property__user-status">
-                    {hostRank}
+                    {host.isPro}
                   </span>
                 </div>
                 <div className="property__description">
                   <p className="property__text">
-                    {hostText}
+                    {description}
                   </p>
                   {/* <p className="property__text">
                     An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
@@ -172,9 +159,9 @@ function Property({ offers, comments }: Props): JSX.Element {
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
                 <ul className="reviews__list">
-                  {comments.map((comment) => (
+                  {/* {comments.map((comment) => (
                     <Review comment={comment} key={nanoid()} />
-                  ))}
+                  ))} */}
                 </ul>
                 <CommentForm />
               </section>
