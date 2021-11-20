@@ -5,17 +5,29 @@ import Property from '../property/property';
 import Login from '../login/login';
 import Main from '../main/main';
 import NotFound from '../not-found/not-found';
+import { State } from '../../types/state';
 import PrivateRoute from '../private-route/private-route';
-import { Offers } from '../../types/offer';
-import { Comments } from '../../types/comment';
+import { connect, ConnectedProps } from 'react-redux';
+import Loading from '../loading/loading';
 
-type Props = {
-  offers: Offers;
-  comments: Comments;
-}
+const mapStateToProps = (state: State) => ({
+  offers: state.offers,
+  favoritesOffers: state.offers,
+  authorizationStatus: state.authStatus,
+  isDataLoaded: state.isDataLoaded,
+});
+const connector = connect(mapStateToProps);
 
-function App({ offers, comments }: Props): JSX.Element {
-  const favoritesOffers = offers.filter((offer) => offer.favorite);
+type Props = ConnectedProps<typeof connector>;
+
+function App(props: Props): JSX.Element {
+  const { offers, isDataLoaded, favoritesOffers } = props;
+
+  if (!isDataLoaded) {
+    return (
+      <Loading />
+    );
+  }
 
   return (
     <BrowserRouter>
@@ -34,7 +46,7 @@ function App({ offers, comments }: Props): JSX.Element {
         >
         </PrivateRoute>
         <Route exact path={AppRoute.Room} >
-          <Property offers={offers} comments={comments} />
+          <Property offers={offers} />
         </Route>
         <Route>
           <NotFound />
@@ -44,4 +56,5 @@ function App({ offers, comments }: Props): JSX.Element {
   );
 }
 
-export default App;
+export { Main };
+export default connector(App);

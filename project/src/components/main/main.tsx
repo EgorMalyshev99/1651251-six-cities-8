@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
-import { citiesList, MAP_CENTER } from '../../const';
+import { CITIES_LIST } from '../../const';
 import { changeCity } from '../../store/action';
 import { Actions } from '../../types/action';
 import { Offer } from '../../types/offer';
@@ -10,11 +10,11 @@ import CitiesList from '../cities-list/cities-list';
 import Map from '../map/map';
 import OffersList from '../offers-list/offers-list';
 
-/* eslint-disable no-console */
+/* eslint-disable */
 
 const mapStateToProps = (state: State) => ({
   city: state.city,
-  offers: state.offers.filter((offer) => offer.location.city.name === state.city),
+  offers: state.offers.filter((offer) => offer.city.name === state.city),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
@@ -86,7 +86,7 @@ function Main({ offers, city, onChangeCity }: Props): JSX.Element {
           <h1 className="visually-hidden">Cities</h1>
           <div className="tabs">
             <section className="locations container">
-              <CitiesList citiesList={citiesList} selectedCity={city} setSelectedCity={onChangeCity} />
+              <CitiesList citiesList={CITIES_LIST} selectedCity={city} setSelectedCity={onChangeCity} />
             </section>
           </div>
           <div className="cities">
@@ -124,7 +124,6 @@ function Main({ offers, city, onChangeCity }: Props): JSX.Element {
               </section>
               <div className="cities__right-section">
                 <Map
-                  centerPoint={MAP_CENTER}
                   offers={offers}
                   selectedOffer={selectedOffer}
                   setAdditionalClass={'cities__map'}
