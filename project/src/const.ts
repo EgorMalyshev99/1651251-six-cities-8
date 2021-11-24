@@ -76,3 +76,5 @@ export const CITIES_LIST: City[] = [
 ];
 
 export const DEFAULT_CITY = CITIES_LIST[0].name;
+
+export const isCheckedAuth = (authorizationStatus: AuthStatus): boolean => authorizationStatus === AuthStatus.Unknown;

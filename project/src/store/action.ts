@@ -1,6 +1,6 @@
-import { AuthStatus } from '../const';
 import { ActionType } from '../types/action';
 import { Offers } from '../types/offer';
+import { AuthStatus } from '../const';
 
 export const changeCity = (city: string) => ({
   type: ActionType.ChangeCity,
@@ -19,4 +19,9 @@ export const requireAuthorization = (authStatus: AuthStatus) => ({
 
 export const requireLogout = () => ({
   type: ActionType.RequireLogout,
+} as const);
+
+export const getEmail = (email: string) => ({
+  type: ActionType.GetEmail,
+  payload: email,
 } as const);

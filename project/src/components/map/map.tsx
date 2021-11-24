@@ -25,6 +25,7 @@ const currentCustomIcon = new Icon({
 
 function Map({ offers, selectedOffer, setAdditionalClass }: Props): JSX.Element {
   const mapRef = useRef(null);
+
   const map = useMap(mapRef, offers[0].city);
   const [markers, setMarkers] = useState<any[]>([]);
   const center = {

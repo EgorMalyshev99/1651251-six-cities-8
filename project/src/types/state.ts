@@ -4,6 +4,7 @@ import { Offers } from './offer';
 export type State = {
   city: string,
   offers: Offers,
-  authStatus: AuthStatus,
   isDataLoaded: boolean,
+  userEmail: string | null,
+  authorizationStatus: AuthStatus,
 }

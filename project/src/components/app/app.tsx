@@ -1,5 +1,5 @@
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
-import { AppRoute, AuthStatus } from '../../const';
+import { Switch, Route, Router } from 'react-router-dom';
+import { AppRoute, isCheckedAuth } from '../../const';
 import Favorites from '../favorites/favorites';
 import Property from '../property/property';
 import Login from '../login/login';
@@ -9,11 +9,12 @@ import { State } from '../../types/state';
 import PrivateRoute from '../private-route/private-route';
 import { connect, ConnectedProps } from 'react-redux';
 import Loading from '../loading/loading';
+import BrowserHistory from '../../browser-history';
 
 const mapStateToProps = (state: State) => ({
   offers: state.offers,
   favoritesOffers: state.offers,
-  authorizationStatus: state.authStatus,
+  authorizationStatus: state.authorizationStatus,
   isDataLoaded: state.isDataLoaded,
 });
 const connector = connect(mapStateToProps);
@@ -21,30 +22,19 @@ const connector = connect(mapStateToProps);
 type Props = ConnectedProps<typeof connector>;
 
 function App(props: Props): JSX.Element {
-  const { offers, isDataLoaded, favoritesOffers } = props;
+  const { offers, isDataLoaded, favoritesOffers, authorizationStatus } = props;
 
-  if (!isDataLoaded) {
-    return (
-      <Loading />
-    );
+  if (!isDataLoaded || isCheckedAuth(authorizationStatus)) {
+    return <Loading />;
   }
-
   return (
-    <BrowserRouter>
+    <Router history={BrowserHistory}>
       <Switch>
         <Route exact path={AppRoute.Root}>
           <Main />
         </Route>
-        <Route exact path={AppRoute.SignIn}>
-          <Login />
-        </Route>
-        <PrivateRoute
-          exact
-          path={AppRoute.Favorites}
-          render={() => <Favorites offers={favoritesOffers} />}
-          authStatus={AuthStatus.Auth}
-        >
-        </PrivateRoute>
+        <Route render={({ history }) => <Login onSubmitButtonClick={() => { history.push(AppRoute.Root); }} />} exact path={AppRoute.SignIn}></Route>
+        <PrivateRoute exact path={AppRoute.Favorites} render={() => <Favorites offers={favoritesOffers} />}></PrivateRoute>
         <Route exact path={AppRoute.Room} >
           <Property offers={offers} />
         </Route>
@@ -52,9 +42,9 @@ function App(props: Props): JSX.Element {
           <NotFound />
         </Route>
       </Switch>
-    </BrowserRouter>
+    </Router>
   );
 }
 
-export { Main };
+// export { Main };
 export default connector(App);
