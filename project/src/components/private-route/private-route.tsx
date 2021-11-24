@@ -1,6 +1,7 @@
 import { connect, ConnectedProps } from 'react-redux';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
 import { AppRoute, AuthStatus } from '../../const';
+import { getAuthorizationStatus } from '../../store/city-process/selectors';
 import { State } from '../../types/state';
 
 type PrivateRouteProps = RouteProps & {
@@ -9,7 +10,7 @@ type PrivateRouteProps = RouteProps & {
 }
 
 const mapStateToProps = (state: State) => ({
-  authorizationStatus: state.authorizationStatus,
+  authorizationStatus: getAuthorizationStatus(state),
 });
 
 const connector = connect(mapStateToProps);

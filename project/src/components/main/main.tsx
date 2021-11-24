@@ -3,6 +3,8 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import { CITIES_LIST } from '../../const';
 import { changeCity } from '../../store/action';
+import { getFilteredByCityOffers } from '../../store/app-data/selectors';
+import { getCity } from '../../store/user-process/selectors';
 import { Actions } from '../../types/action';
 import { Offer } from '../../types/offer';
 import { State } from '../../types/state';
@@ -12,8 +14,8 @@ import Map from '../map/map';
 import OffersList from '../offers-list/offers-list';
 
 const mapStateToProps = (state: State) => ({
-  city: state.city,
-  offers: state.offers.filter((offer) => offer.city.name === state.city),
+  city: getCity(state),
+  offers: getFilteredByCityOffers(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({

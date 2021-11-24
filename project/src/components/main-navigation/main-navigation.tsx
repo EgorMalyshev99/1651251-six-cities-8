@@ -2,6 +2,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthStatus } from '../../const';
 import { logoutAction } from '../../store/api-actions';
+import { getAuthorizationStatus, getUserEmail } from '../../store/city-process/selectors';
 import { ThunkAppDispatch } from '../../types/action';
 import { State } from '../../types/state';
 
@@ -12,8 +13,8 @@ const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
 });
 
 const mapStateToProps = (state: State) => ({
-  auth: state.authorizationStatus,
-  email: state.userEmail,
+  auth: getAuthorizationStatus(state),
+  email: getUserEmail(state),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

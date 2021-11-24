@@ -10,13 +10,16 @@ import PrivateRoute from '../private-route/private-route';
 import { connect, ConnectedProps } from 'react-redux';
 import Loading from '../loading/loading';
 import BrowserHistory from '../../browser-history';
+import { getFavoritesOffers, getLoadedDataStatus, getOffers } from '../../store/app-data/selectors';
+import { getAuthorizationStatus } from '../../store/city-process/selectors';
 
 const mapStateToProps = (state: State) => ({
-  offers: state.offers,
-  favoritesOffers: state.offers,
-  authorizationStatus: state.authorizationStatus,
-  isDataLoaded: state.isDataLoaded,
+  offers: getOffers(state),
+  favoritesOffers: getFavoritesOffers(state),
+  authorizationStatus: getAuthorizationStatus(state),
+  isDataLoaded: getLoadedDataStatus(state),
 });
+
 const connector = connect(mapStateToProps);
 
 type Props = ConnectedProps<typeof connector>;
