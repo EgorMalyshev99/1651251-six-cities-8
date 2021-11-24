@@ -20,6 +20,8 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function MainNavigation({ auth, email, onSubmit }: PropsFromRedux): JSX.Element {
+  /* eslint-disable no-console */
+  console.log('auth', auth);
   return (
     <header className="header">
       <div className="container">

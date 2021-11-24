@@ -22,7 +22,7 @@ const connector = connect(mapStateToProps);
 type Props = ConnectedProps<typeof connector>;
 
 function App(props: Props): JSX.Element {
-  const { offers, isDataLoaded, favoritesOffers, authorizationStatus } = props;
+  const { offers, favoritesOffers, authorizationStatus, isDataLoaded } = props;
 
   if (!isDataLoaded || isCheckedAuth(authorizationStatus)) {
     return <Loading />;

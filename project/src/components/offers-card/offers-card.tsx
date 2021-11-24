@@ -68,9 +68,7 @@ function OffersCard({ offer, isFavoritesPage, onMouseOver }: Props): JSX.Element
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">
-            <Link to={offersCardPath}>{title}</Link>
-          </a>
+          <Link to={offersCardPath}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

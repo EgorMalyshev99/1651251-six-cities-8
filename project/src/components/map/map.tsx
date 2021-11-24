@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Icon, Marker } from 'leaflet';
-import { Offer, Offers } from '../../types/offer';
+import { City, Offer, Offers } from '../../types/offer';
 import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../const';
 import useMap from '../../hooks/use-map';
 import 'leaflet/dist/leaflet.css';
@@ -25,12 +25,26 @@ const currentCustomIcon = new Icon({
 
 function Map({ offers, selectedOffer, setAdditionalClass }: Props): JSX.Element {
   const mapRef = useRef(null);
+  let currentCity: City | undefined;
 
-  const map = useMap(mapRef, offers[0].city);
+  if (offers.length === 0) {
+    currentCity = {
+      name: 'Paris',
+      location: {
+        latitude: 48.864716,
+        longitude: 2.349014,
+        zoom: 10,
+      },
+    };
+  } else {
+    currentCity = offers[0].city;
+  }
+
+  const map = useMap(mapRef, currentCity);
   const [markers, setMarkers] = useState<any[]>([]);
   const center = {
-    lat: offers[0].city.location.latitude,
-    lng: offers[0].city.location.longitude,
+    lat: currentCity.location.latitude,
+    lng: currentCity.location.longitude,
   };
 
   useEffect(() => {
