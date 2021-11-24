@@ -1,51 +1,33 @@
-import { useEffect, useRef, useState } from 'react';
-import { Icon, Marker } from 'leaflet';
-import { City, Offer, Offers } from '../../types/offer';
-import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../const';
-import useMap from '../../hooks/use-map';
+import { useRef, useEffect, useState } from 'react';
+import leaflet from 'leaflet';
+import useMap from '../../hooks/use-map.js';
+import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
+import { Offers, Offer, City } from '../../types/offer';
 import 'leaflet/dist/leaflet.css';
 
-type Props = {
+type MapProps = {
+  setAdditionalClass: string;
   offers: Offers;
   selectedOffer?: Offer;
-  setAdditionalClass: string;
+  mapCenter: City | undefined;
 }
 
-const defaultCustomIcon = new Icon({
-  iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [27, 39],
-  iconAnchor: [13, 39],
-});
-
-const currentCustomIcon = new Icon({
-  iconUrl: URL_MARKER_CURRENT,
-  iconSize: [27, 39],
-  iconAnchor: [13, 39],
-});
-
-function Map({ offers, selectedOffer, setAdditionalClass }: Props): JSX.Element {
-  const mapRef = useRef(null);
-  let currentCity: City | undefined;
-
-  if (offers.length === 0) {
-    currentCity = {
-      name: 'Paris',
-      location: {
-        latitude: 48.864716,
-        longitude: 2.349014,
-        zoom: 10,
-      },
-    };
-  } else {
-    currentCity = offers[0].city;
-  }
-
-  const map = useMap(mapRef, currentCity);
+function Map({ setAdditionalClass, mapCenter, offers, selectedOffer }: MapProps): JSX.Element {
   const [markers, setMarkers] = useState<any[]>([]);
-  const center = {
-    lat: currentCity.location.latitude,
-    lng: currentCity.location.longitude,
-  };
+  const mapRef = useRef(null);
+  const map = useMap(mapRef, mapCenter);
+
+  const defaultCustomIcon = leaflet.icon({
+    iconUrl: URL_MARKER_DEFAULT,
+    iconSize: [27, 39],
+    iconAnchor: [13, 39],
+  });
+
+  const activeCustomIcon = leaflet.icon({
+    iconUrl: URL_MARKER_CURRENT,
+    iconSize: [27, 39],
+    iconAnchor: [13, 39],
+  });
 
   useEffect(() => {
     if (map) {
@@ -53,33 +35,30 @@ function Map({ offers, selectedOffer, setAdditionalClass }: Props): JSX.Element 
         marker.remove();
       });
       setMarkers([]);
-      const currentMarkers: any = [];
 
-      offers.forEach((offer) => {
-        const marker = new Marker({
-          lat: offer.location.latitude,
-          lng: offer.location.longitude,
+      const arrMarkers: any = [];
+      offers.forEach((point) => {
+        const marker = leaflet.marker({
+          lat: point.location.latitude,
+          lng: point.location.longitude,
+        }, {
+          icon: (selectedOffer !== undefined && point.id === selectedOffer.id)
+            ? activeCustomIcon
+            : defaultCustomIcon,
         });
-
-        currentMarkers.push(marker);
-        marker
-          .setIcon(
-            selectedOffer !== undefined && offer.title === selectedOffer.title
-              ? currentCustomIcon
-              : defaultCustomIcon,
-          )
-          .addTo(map);
+        arrMarkers.push(marker);
+        marker.addTo(map);
       });
-      setMarkers(currentMarkers);
+      setMarkers(arrMarkers);
     }
   }, [map, offers, selectedOffer]);
 
-  useEffect(() => {
-    map?.setView(center);
-  }, [center, map]);
-
   return (
-    <section className={`${setAdditionalClass} map`} ref={mapRef}></section>
+    <section
+      className={`${setAdditionalClass} map`}
+      ref={mapRef}
+    >
+    </section>
   );
 }
 

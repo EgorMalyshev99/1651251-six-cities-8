@@ -10,12 +10,10 @@ import PrivateRoute from '../private-route/private-route';
 import { connect, ConnectedProps } from 'react-redux';
 import Loading from '../loading/loading';
 import BrowserHistory from '../../browser-history';
-import { getFavoritesOffers, getLoadedDataStatus, getOffers } from '../../store/app-data/selectors';
-import { getAuthorizationStatus } from '../../store/city-process/selectors';
+import { getLoadedDataStatus } from '../../store/app-data/selectors';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 const mapStateToProps = (state: State) => ({
-  offers: getOffers(state),
-  favoritesOffers: getFavoritesOffers(state),
   authorizationStatus: getAuthorizationStatus(state),
   isDataLoaded: getLoadedDataStatus(state),
 });
@@ -25,7 +23,7 @@ const connector = connect(mapStateToProps);
 type Props = ConnectedProps<typeof connector>;
 
 function App(props: Props): JSX.Element {
-  const { offers, favoritesOffers, authorizationStatus, isDataLoaded } = props;
+  const { authorizationStatus, isDataLoaded } = props;
 
   if (!isDataLoaded || isCheckedAuth(authorizationStatus)) {
     return <Loading />;
@@ -36,11 +34,13 @@ function App(props: Props): JSX.Element {
         <Route exact path={AppRoute.Root}>
           <Main />
         </Route>
+
         <Route render={({ history }) => <Login onSubmitButtonClick={() => { history.push(AppRoute.Root); }} />} exact path={AppRoute.SignIn}></Route>
-        <PrivateRoute exact path={AppRoute.Favorites} render={() => <Favorites offers={favoritesOffers} />}></PrivateRoute>
-        <Route exact path={AppRoute.Room} >
-          <Property offers={offers} />
-        </Route>
+
+        <PrivateRoute exact path={AppRoute.Favorites} render={() => <Favorites />} ></PrivateRoute>
+
+        <Route render={({ match }) => <Property offerId={match.params.id} />} exact path={AppRoute.Room}></Route>
+
         <Route>
           <NotFound />
         </Route>
@@ -49,5 +49,5 @@ function App(props: Props): JSX.Element {
   );
 }
 
-// export { Main };
+export { Main };
 export default connector(App);

@@ -1,12 +1,16 @@
-import { AuthStatus } from '../const';
-import { RootState } from '../store/root-reducer';
 import { Offers } from './offer';
+import { AuthStatus, SORT } from '../const';
+import { RootState } from '../store/root-reducer';
 import { Reviews } from './review';
+import { User } from './user';
 
 export type AppData = {
   offers: Offers,
   comments: Reviews,
+  sortBy: SORT
   isDataLoaded: boolean,
+  nearbyOffers: Offers,
+  favoritesOffers: Offers,
 }
 
 export type CityProcess = {
@@ -15,15 +19,7 @@ export type CityProcess = {
 
 export type UserProcess = {
   authorizationStatus: AuthStatus,
-  userEmail: string,
+  user: User,
 }
 
 export type State = RootState;
-
-// export type State = {
-//   city: string,
-//   offers: Offers,
-//   isDataLoaded: boolean,
-//   userEmail: string | null,
-//   authorizationStatus: AuthStatus,
-// }

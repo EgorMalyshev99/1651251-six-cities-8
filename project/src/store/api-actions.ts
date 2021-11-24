@@ -1,35 +1,45 @@
 import { ThunkActionResult } from '../types/action';
-import { Offer } from '../types/offer';
-import { APIRoute, AuthStatus } from '../const';
-import { addOffers, getEmail, requireAuthorization, requireLogout } from './action';
 import { Auth } from '../types/auth';
+import { APIRoute, AuthStatus } from '../const';
+import { addComments, addFavoritesOffers, addNearbyOffers, addOffers, getUser, requireAuthorization, requireLogout, updateOfferFavoriteStatus } from './action';
 import { dropToken, saveToken, Token } from '../services/token';
+import { CommentPost, ServerReview } from '../types/review';
+import { adaptCommentsToClient, adaptOfferToClient, adaptUserToClient } from '../services/adapters';
+import { ServerOffer } from '../types/server-offer';
+import { ServerUser } from '../types/user';
 
-const NO_AUTH_MESSAGE = 'Не забудьте авторизоваться';
+const AUTH_FAIL_MESSAGE = 'Не забудьте авторизоваться';
 
 export const fetchOffersAction = (): ThunkActionResult =>
   async (dispatch, getState, api): Promise<void> => {
-    const { data } = await api.get<Offer[]>(APIRoute.Offers);
-    dispatch(addOffers(data));
+    const { data } = await api.get<ServerOffer[]>(APIRoute.Offers);
+    dispatch(addOffers(data.map((dataItem) => adaptOfferToClient(dataItem))));
+  };
+
+export const fetchCommentsAction = (id: string): ThunkActionResult =>
+  async (dispatch, getState, api): Promise<void> => {
+    const { data } = await api.get<ServerReview[]>(`${APIRoute.Comments}/${id}`);
+    dispatch(addComments(data.map((dataItem) => adaptCommentsToClient(dataItem))));
   };
 
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     try {
-      await api.get(APIRoute.Login);
+      const { data } = await api.get(APIRoute.Login);
       dispatch(requireAuthorization(AuthStatus.Auth));
+      dispatch(getUser(adaptUserToClient(data)));
     } catch {
-      /* eslint-disable no-console */
-      console.log(NO_AUTH_MESSAGE);
+      throw AUTH_FAIL_MESSAGE;
     }
   };
 
 export const loginAction = ({ login: email, password }: Auth): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const { data: { token } } = await api.post<{ token: Token }>(APIRoute.Login, { email, password });
-    saveToken(token);
+    const response = await api.post<ServerUser>(APIRoute.Login, { email, password });
+    const data = response.data;
+    saveToken(data.token);
     dispatch(requireAuthorization(AuthStatus.Auth));
-    dispatch(getEmail(email));
+    dispatch(getUser(adaptUserToClient(data)));
   };
 
 
@@ -38,5 +48,29 @@ export const logoutAction = (): ThunkActionResult =>
     api.delete(APIRoute.Logout);
     dropToken();
     dispatch(requireLogout());
+  };
+
+export const fetchNearbyOffersAction = (id: string): ThunkActionResult =>
+  async (dispatch, getState, api): Promise<void> => {
+    const { data } = await api.get<ServerOffer[]>(`${APIRoute.Offers}/${id}${APIRoute.NearbyOffers}`);
+    dispatch(addNearbyOffers(data.map((dataItem) => adaptOfferToClient(dataItem))));
+  };
+
+export const fetchFavoritesOffersAction = (): ThunkActionResult =>
+  async (dispatch, getState, api): Promise<void> => {
+    const { data } = await api.get<ServerOffer[]>(APIRoute.Favorite);
+    dispatch(addFavoritesOffers(data.map((dataItem) => adaptOfferToClient(dataItem))));
+  };
+
+export const changeFavoriteStatusAction = (hotelId: number, isFavorite: boolean): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
+    await api.post<{ token: Token }>(`${APIRoute.Favorite}/${hotelId}/${isFavorite ? 1 : 0}`);
+    dispatch(updateOfferFavoriteStatus(hotelId, isFavorite));
+  };
+
+export const postComment = (id: string, comment: CommentPost): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
+    const { data } = await api.post<ServerReview[]>(`${APIRoute.Comments}/${id}`, comment);
+    dispatch(addComments(data.map((dataItem) => adaptCommentsToClient(dataItem))));
   };
 

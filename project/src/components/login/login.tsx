@@ -30,7 +30,6 @@ function Login(props: PropsFromRedux & { onSubmitButtonClick: () => void }): JSX
     }
     onSubmitButtonClick();
   };
-
   return (
     <div className="page page--gray page--login">
       <header className="header">

@@ -12,6 +12,8 @@ import { requireAuthorization } from './store/action';
 import thunk from 'redux-thunk';
 import { ThunkAppDispatch } from './types/action';
 import { checkAuthAction, fetchOffersAction } from './store/api-actions';
+import { Router } from 'react-router';
+import browserHistory from './browser-history';
 
 const api = createAPI(() => store.dispatch(requireAuthorization(AuthStatus.NoAuth)));
 const store = createStore(
@@ -26,7 +28,9 @@ const store = createStore(
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <Router history={browserHistory}>
+        <App />
+      </Router>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'));

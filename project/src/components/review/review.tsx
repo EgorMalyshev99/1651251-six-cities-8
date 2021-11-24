@@ -1,27 +1,25 @@
-import { Comment } from '../../types/comment';
+import { Review } from '../../types/review';
 
 type Props = {
-  comment: Comment,
-}
+  commentReview: Review;
+};
 
-function Review({ comment }: Props): JSX.Element {
-  const {
-    author,
-    text,
-    date,
-    image,
-    rating,
-  } = comment;
-
+function SingleReview({ commentReview }: Props): JSX.Element {
+  const { user, comment, date, rating } = commentReview;
   return (
     <li className="reviews__item">
       <div className="reviews__user user">
         <div className="reviews__avatar-wrapper user__avatar-wrapper">
-          <img className="reviews__avatar user__avatar" src={image} width="54" height="54" alt="Reviews avatar" />
+          <img className="reviews__avatar user__avatar" src={user.avatarUrl} width="54" height="54" alt="Reviews avatar" />
         </div>
-        <span className="reviews__user-name">
-          {author}
-        </span>
+        <span className="reviews__user-name">{user.name}</span>
+        {
+          user.isPro && (
+            <span className="property__user-status">
+              Pro
+            </span>
+          )
+        }
       </div>
       <div className="reviews__info">
         <div className="reviews__rating rating">
@@ -30,13 +28,11 @@ function Review({ comment }: Props): JSX.Element {
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <p className="reviews__text">
-          {text}
-        </p>
-        <time className="reviews__time" dateTime="2019-04-24">{date}</time>
+        <p className="reviews__text">{comment}</p>
+        <time className="reviews__time" dateTime={date}>{date}</time>
       </div>
     </li>
   );
 }
 
-export default Review;
+export default SingleReview;

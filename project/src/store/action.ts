@@ -1,6 +1,8 @@
 import { ActionType } from '../types/action';
 import { Offers } from '../types/offer';
-import { AuthStatus } from '../const';
+import { AuthStatus, SORT } from '../const';
+import { Review } from '../types/review';
+import { User } from '../types/user';
 
 export const changeCity = (city: string) => ({
   type: ActionType.ChangeCity,
@@ -12,6 +14,11 @@ export const addOffers = (offers: Offers) => ({
   payload: offers,
 } as const);
 
+export const addComments = (comments: Review[]) => ({
+  type: ActionType.AddComments,
+  payload: comments,
+} as const);
+
 export const requireAuthorization = (authStatus: AuthStatus) => ({
   type: ActionType.RequireAuthorization,
   payload: authStatus,
@@ -21,7 +28,27 @@ export const requireLogout = () => ({
   type: ActionType.RequireLogout,
 } as const);
 
-export const getEmail = (email: string) => ({
-  type: ActionType.GetEmail,
-  payload: email,
+export const getUser = (user: User) => ({
+  type: ActionType.GetUser,
+  payload: user,
+} as const);
+
+export const addNearbyOffers = (nearbyOffers: Offers) => ({
+  type: ActionType.AddNearbyOffers,
+  payload: nearbyOffers,
+} as const);
+
+export const addFavoritesOffers = (favoritesOffers: Offers) => ({
+  type: ActionType.AddFavoritesOffers,
+  payload: favoritesOffers,
+} as const);
+
+export const updateOfferFavoriteStatus = (offerId: number, isFavorite: boolean) => ({
+  type: ActionType.UpdateOfferFavoriteStatus,
+  payload: { offerId, isFavorite },
+} as const);
+
+export const sortOffersBy = (sortBy: SORT) => ({
+  type: ActionType.SortOffersBy,
+  payload: sortBy,
 } as const);

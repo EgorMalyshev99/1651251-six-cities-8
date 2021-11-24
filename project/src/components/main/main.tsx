@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
-import { CITIES_LIST } from '../../const';
+import { CITIES_LIST, findMapCenter } from '../../const';
 import { changeCity } from '../../store/action';
 import { getFilteredByCityOffers } from '../../store/app-data/selectors';
-import { getCity } from '../../store/user-process/selectors';
+import { getCity } from '../../store/city-process/selectors';
 import { Actions } from '../../types/action';
 import { Offer } from '../../types/offer';
 import { State } from '../../types/state';
@@ -87,11 +87,7 @@ function Main({ offers, city, onChangeCity }: PropsFromRedux): JSX.Element {
                 <OffersList offers={offers} isFavoritesPage={false} onCardHover={onCardHover} />
               </section>
               <div className="cities__right-section">
-                <Map
-                  offers={offers}
-                  selectedOffer={selectedOffer}
-                  setAdditionalClass={'cities__map'}
-                />
+                <Map setAdditionalClass={'cities__map'} offers={offers} selectedOffer={selectedOffer} mapCenter={findMapCenter(city)} />
               </div>
             </div>
           </div>

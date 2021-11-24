@@ -1,12 +1,27 @@
-import { Offers } from '../../types/offer';
+import { useEffect } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { fetchFavoritesOffersAction } from '../../store/api-actions';
+import { getFavoritesOffersByCity } from '../../store/app-data/selectors';
+import { State } from '../../types/state';
 import MainNavigation from '../main-navigation/main-navigation';
 import OffersList from '../offers-list/offers-list';
 
-type Props = {
-  offers: Offers
-}
+const mapStateToProps = (state: State) => ({
+  favoritesOffersByCity: getFavoritesOffersByCity(state),
+});
 
-function Favorites({ offers }: Props): JSX.Element {
+const mapDispatchToProps = {
+  fetchFavoritesOffers: () => fetchFavoritesOffersAction(),
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function Favorites({ favoritesOffersByCity, fetchFavoritesOffers }: PropsFromRedux): JSX.Element {
+  useEffect(() => {
+    fetchFavoritesOffers();
+  }, [fetchFavoritesOffers]);
+
   return (
     <div className="page">
       <MainNavigation />
@@ -15,16 +30,18 @@ function Favorites({ offers }: Props): JSX.Element {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>{offers[0].city.name}</span>
-                    </a>
+              {favoritesOffersByCity.map((item) => (
+                <li className="favorites__locations-items" key={item.city}>
+                  <div className="favorites__locations locations locations--current">
+                    <div className="locations__item">
+                      <a className="locations__item-link" href="#">
+                        <span>{item.city}</span>
+                      </a>
+                    </div>
                   </div>
-                </div>
-                <OffersList offers={offers} isFavoritesPage />
-              </li>
+                  <OffersList isFavoritesPage offers={item.offers} />
+                </li>
+              ))}
             </ul>
           </section>
         </div>
@@ -39,4 +56,4 @@ function Favorites({ offers }: Props): JSX.Element {
   );
 }
 
-export default Favorites;
+export default connector(Favorites);

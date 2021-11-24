@@ -2,9 +2,9 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthStatus } from '../../const';
 import { logoutAction } from '../../store/api-actions';
-import { getAuthorizationStatus, getUserEmail } from '../../store/city-process/selectors';
 import { ThunkAppDispatch } from '../../types/action';
 import { State } from '../../types/state';
+import { getAuthorizationStatus, getUser } from '../../store/user-process/selectors';
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onSubmit() {
@@ -14,15 +14,15 @@ const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
 
 const mapStateToProps = (state: State) => ({
   auth: getAuthorizationStatus(state),
-  email: getUserEmail(state),
+  user: getUser(state),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function MainNavigation({ auth, email, onSubmit }: PropsFromRedux): JSX.Element {
-  /* eslint-disable no-console */
-  console.log('auth', auth);
+function MainNavigation({ auth, user, onSubmit }: PropsFromRedux): JSX.Element {
+  const { email, avatarUrl } = user;
+
   return (
     <header className="header">
       <div className="container">
@@ -37,8 +37,9 @@ function MainNavigation({ auth, email, onSubmit }: PropsFromRedux): JSX.Element 
               {auth === AuthStatus.Auth && (
                 <>
                   <li className="header__nav-item user">
-                    <a className="header__nav-link header__nav-link--profile" href="#">
+                    <a className="header__nav-link header__nav-link--profile" href="/favorites">
                       <div className="header__avatar-wrapper user__avatar-wrapper">
+                        <img className="user__avatar" src={avatarUrl} alt="avatar" />
                       </div>
                       <span className="header__user-name user__name">{email}</span>
                     </a>
@@ -53,8 +54,6 @@ function MainNavigation({ auth, email, onSubmit }: PropsFromRedux): JSX.Element 
               {(auth === AuthStatus.NoAuth || auth === AuthStatus.Unknown) && (
                 <li className="header__nav-item user">
                   <Link className="header__nav-link header__nav-link--profile" to={AppRoute.SignIn}>
-                    {/* <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div> */}
                     <span className="header__login">Sign in</span>
                   </Link>
                 </li>
@@ -64,7 +63,6 @@ function MainNavigation({ auth, email, onSubmit }: PropsFromRedux): JSX.Element 
         </div>
       </div>
     </header>
-
   );
 }
 
