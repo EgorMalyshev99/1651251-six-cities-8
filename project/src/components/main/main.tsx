@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
-import { CITIES_LIST, findMapCenter } from '../../const';
-import { changeCity } from '../../store/action';
-import { getFilteredByCityOffers } from '../../store/app-data/selectors';
+import { CITIES_LIST, findMapCenter, SORT, SORTING_LIST } from '../../const';
+import { changeCity, sortOffersBy } from '../../store/action';
+import { getFilteredByCityOffers, getSortBy } from '../../store/app-data/selectors';
 import { getCity } from '../../store/city-process/selectors';
 import { Actions } from '../../types/action';
 import { Offer } from '../../types/offer';
@@ -16,19 +16,32 @@ import OffersList from '../offers-list/offers-list';
 const mapStateToProps = (state: State) => ({
   city: getCity(state),
   offers: getFilteredByCityOffers(state),
+  sortBy: getSortBy(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
   onChangeCity(city: string) {
     dispatch(changeCity(city));
   },
+  sortOffers: (sortBy: SORT) => dispatch(sortOffersBy(sortBy)),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function Main({ offers, city, onChangeCity }: PropsFromRedux): JSX.Element {
+function Main({ offers, city, onChangeCity, sortOffers, sortBy }: PropsFromRedux): JSX.Element {
   const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>();
+  const [anchor, setAnchor] = useState(false);
+
+  const handleClick = () => {
+    if (!anchor) {
+      setAnchor(true);
+    } else {
+      setAnchor(false);
+    }
+    return anchor;
+  };
+
 
   const onCardHover = (offerId: number) => {
     const currentOffer = offers.find((offer) =>
@@ -58,30 +71,24 @@ function Main({ offers, city, onChangeCity }: PropsFromRedux): JSX.Element {
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">{offers.length} places to stay in {city}</b>
-                <form className="places__sorting" action="#" method="get">
-                  <span className="places__sorting-caption">Sort by</span>
+                <form onClick={handleClick} className="places__sorting" action="#" method="get">
+                  <span className="places__sorting-caption">Sort by </span>
                   <span className="places__sorting-type" tabIndex={0}>
-                    Popular
+                    {SORTING_LIST.find((item) => item.value === sortBy)?.title}
                     <svg className="places__sorting-arrow" width="7" height="4">
                       <use xlinkHref="#icon-arrow-select"></use>
                     </svg>
                   </span>
-                  <ul className="places__options places__options--custom">
-                    <li
-                      className="places__option places__option--active"
-                      tabIndex={0}
-                    >
-                      Popular
-                    </li>
-                    <li className="places__option" tabIndex={0}>
-                      Price: low to high
-                    </li>
-                    <li className="places__option" tabIndex={0}>
-                      Price: high to low
-                    </li>
-                    <li className="places__option" tabIndex={0}>
-                      Top rated first
-                    </li>
+                  <ul className={`places__options places__options--custom ${anchor ? 'places__options--opened' : ''}`}>
+                    {SORTING_LIST.map((sortingItem) => (
+                      <li
+                        className={`places__option ${sortingItem.value === sortBy ? 'places__option--active' : ''}`}
+                        tabIndex={0}
+                        onClick={() => sortOffers(sortingItem.value)}
+                        key={sortingItem.value}
+                      >
+                        {sortingItem.title}
+                      </li>))}
                   </ul>
                 </form>
                 <OffersList offers={offers} isFavoritesPage={false} onCardHover={onCardHover} />

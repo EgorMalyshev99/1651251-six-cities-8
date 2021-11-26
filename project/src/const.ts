@@ -85,9 +85,42 @@ export const findMapCenter = (cityName: string): City | undefined => CITIES_LIST
 
 export const isCheckedAuth = (authorizationStatus: AuthStatus): boolean => authorizationStatus === AuthStatus.Unknown;
 
+export const RATING_POINTS = ['5', '4', '3', '2', '1'];
+
 export enum SORT {
   Popular = 'Popular',
   Rating = 'Rating',
   PriceLowToHigh = 'Price: low to hight',
   PriceHighToLow = 'Price: hight to low',
 }
+
+export const SORTING_LIST = [{
+  value: SORT.Popular,
+  title: 'Popular',
+}, {
+  value: SORT.PriceLowToHigh,
+  title: 'Price: low to hight',
+}, {
+  value: SORT.PriceHighToLow,
+  title: 'Price: hight to low',
+}, {
+  value: SORT.Rating,
+  title: 'Rating',
+}];
+
+export const PROPERTY_TYPE = [{
+  value: 'apartment',
+  title: 'Apartment',
+}, {
+  value: 'room',
+  title: 'Private Room',
+},
+{
+  value: 'house',
+  title: 'House',
+},
+{
+  value: 'hotel',
+  title: 'Hotel',
+},
+];
